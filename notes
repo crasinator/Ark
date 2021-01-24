@@ -1,10 +1,12 @@
+ARK TRACKER 
+
+Arkk.call
+-----------------------------------
 puts "Welcome to Ark Tracker"
 puts    "in Cathie we trust"
 
-------------------------------------------------------
-
 //if Arkk.market? == false 
-       puts  "NYSE is currently closed" 
+       puts  "the NYSE is currently closed" 
 //else
    puts "$ARKK for #{todays date}"
    puts     "#{@arkk.share_price} per share"
@@ -21,7 +23,8 @@ puts    "in Cathie we trust"
             puts "---------------------------------------------"
             puts "$TSLA buys: #{@tsla.buy}
             puts "$TSLA sells: #{@tsla.sell}
-
+        end
+//end
 ------------------------------------------------------
 
     "What would you like to do?" 
@@ -29,7 +32,7 @@ puts    "in Cathie we trust"
         "to see all transations for #{documents.week}, type '1' "
 
             #=> "$ARKK transations for #{documents.week}"
-            #=>
+            #=> "---------------------------------------"
             #=>     "total transations #{@all_transations.count}"
             #=>
             #=>     "total sold #{@all_sold.count}"
@@ -38,7 +41,7 @@ puts    "in Cathie we trust"
             #=>     "Most Sold Ticker for #{documents.week}: #{@hot_sell_tick}"
             #=>     "Most Bought Ticker for #{documents.week}: #{@hot_buy_tick}"
             #=>
-            #=>       "to go back type '1', to exit, type '0' "
+            #=>       "to go back type '1', to exit Ark Tracker, type '0' "
 
         "to see $ARKK movement for this week, type '2' "
 

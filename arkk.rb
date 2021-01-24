@@ -1,23 +1,60 @@
 class Arkk
 
     def initialize(doc)
+        @arkk_share_price #defined
+            #//find the most recent $ARKK Market Price 
         @all_transations 
-            //all securities transations 
+            #//all securities transations 
         @all_sold = []
-            //securities sold for the week
+            #//securities sold for the week
         @all_buy = []
-            //securities bought for the week
+            #//securities bought for the week
         @all_ticker = []
-            //all tickers for the week
+            #//all tickers for the week
         @all_docs
-            //all 5 trading docs for the week 
+            #//all 5 trading docs for the week 
         @hot_buy_tick
-            //returns the tick of the most bought //stock 4 da week 
+            #//returns the tick of the most bought //stock 4 da week 
         @hot_sell_tick
-            //returns the tick of the most sold stock 4 da week
+            #//returns the tick of the most sold stock 4 da week
         @tsla.buy
-            //found $tsla transations 
+            #//found $tsla transations 
     end 
+
+    def call 
+
+        puts "Welcome to Ark Tracker"
+        puts    "in Cathie we trust"
+
+        if Arkk.market? == false 
+            puts  "the NYSE is currently closed" 
+        else
+            puts "$ARKK for #{todays date}"
+            puts "#{@arkk.share_price} per share"
+                     #//finds the current share price from robinhood api 
+            puts "#{@ark.percent_change} today"
+                     #//finds the current intraday percentage chage for #{todays date}
+            puts "ARKK intraday tracker availble for #{documents.week}"
+                     #//goes thru the fold of exiting trade documents 
+        end
+
+        if tesla? == false             
+            puts "there have been no $TSLA trades within ARK for #{documents.week}"
+        else 
+            puts "$TSLA transations within ARK #{documents.week}"
+            puts "---------------------------------------------"
+            puts "$TSLA buys: #{@tsla.buy}"
+            puts "$TSLA sells: #{@tsla.sell}"
+        end
+    end
+
+    def arkk_share_price
+            1. go to stock api 
+            2. find $ARKK Market Price 
+            3. store in @arkk_share_price
+    end 
+
+
 
     def all_ticker 
         arr = []
