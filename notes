@@ -1,0 +1,52 @@
+puts "Welcome to Ark Tracker"
+puts    "in Cathie we trust"
+
+------------------------------------------------------
+
+//if Arkk.market? == false 
+       puts  "NYSE is currently closed" 
+//else
+   puts "$ARKK for #{todays date}"
+   puts     "#{@arkk.share_price} per share"
+                    //finds the current share price from robinhood api 
+   puts     "#{@ark.percent_change} today"
+                    //finds the current intraday percentage chage for #{todays date}
+        
+   puts "ARKK intraday tracker availble for #{documents.week}"
+                    //goes thru the fold of exiting trade documents 
+        if tesla? == false             
+            puts "there have been no $TSLA trades within ARK for #{documents.week}"
+        else 
+            puts "$TSLA transations within ARK #{documents.week}
+            puts "---------------------------------------------"
+            puts "$TSLA buys: #{@tsla.buy}
+            puts "$TSLA sells: #{@tsla.sell}
+
+------------------------------------------------------
+
+    "What would you like to do?" 
+
+        "to see all transations for #{documents.week}, type '1' "
+
+            #=> "$ARKK transations for #{documents.week}"
+            #=>
+            #=>     "total transations #{@all_transations.count}"
+            #=>
+            #=>     "total sold #{@all_sold.count}"
+            #=>     "total buy #{@all_buy.count}"
+            #=>
+            #=>     "Most Sold Ticker for #{documents.week}: #{@hot_sell_tick}"
+            #=>     "Most Bought Ticker for #{documents.week}: #{@hot_buy_tick}"
+            #=>
+            #=>       "to go back type '1', to exit, type '0' "
+
+        "to see $ARKK movement for this week, type '2' "
+
+            #=> "
+            
+    //if tesla?
+         "to see all $TSLA type 'moon'
+
+
+
+

@@ -58,13 +58,22 @@ class Arkk
     
     
     def all_sold 
-        ////securities sold for the week
+        //securities sold for the week
     1. go thru doc - direction 
      a. find buy and push into arr @all_buy
      b. find buy and push into arr @all_buy
     
     2. store in all transations in @all_sold
-    
     end
     
+    def most_sold 
+        1. go thru all sold, consolidate
+        2. return "$" + the ticker with the highest number shares sold
+            #=> $PLTR 
     end 
+
+    def market? 
+        //return t/f to check if market is open 
+        //returns f when NYSE is closed (holidays/weekends)
+    end 
+end 
