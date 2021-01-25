@@ -1,55 +1,118 @@
 ARK TRACKER 
 
+// 'Ark' refers to ARK Investment Management LLC (“ARK” ® ”ARK Invest”)
+// '$ARKK' refers to ARK INNOVATION ETF on the NYSE
+-----------------------------------
 Arkk.call
 -----------------------------------
 puts "Welcome to Ark Tracker"
 puts    "in Cathie we trust"
 
 //if Arkk.market? == false 
-       puts  "the NYSE is currently closed" 
+    puts  "the NYSE is currently closed" 
 //else
-   puts "$ARKK for #{todays date}"
-   puts     "#{@arkk.share_price} per share"
-                    //finds the current share price from robinhood api 
-   puts     "#{@ark.percent_change} today"
-                    //finds the current intraday percentage chage for #{todays date}
+    puts "$ARKK for #{todays date}"
+    puts     "#{@arkk.share_price} per share"
+                    //finds the current share price from Robinhood api 
+    puts     "#{@ark.percent_change} today"
+                    //finds the current intraday percentage change for #{todays date}
         
-   puts "ARKK intraday tracker availble for #{documents.week}"
+    puts "ARK intraday tracker available for #{documents.week}"
                     //goes thru the fold of exiting trade documents 
-        if tesla? == false             
+        if Tesla? == false             
             puts "there have been no $TSLA trades within ARK for #{documents.week}"
         else 
-            puts "$TSLA transations within ARK #{documents.week}
+            puts "$TSLA transactions within ARK #{documents.week}
             puts "---------------------------------------------"
             puts "$TSLA buys: #{@tsla.buy}
             puts "$TSLA sells: #{@tsla.sell}
         end
 //end
-------------------------------------------------------
+-----------------------------------
+Arkk.menu
+-----------------------------------
+puts "What would you like to do?" 
 
-    "What would you like to do?" 
+puts    "To see all Ark ETF transactions for #{documents.week}, type '1' "
+<option 1>
+    #=> 
+    #=>     ARK Transactions for #{documents.week}
+    #=>     ---------------------------------------
+    #=>     Total Transactions #{@all_transactions.count}
+    #=>
+    #=>             * Total Sold: #{@all_sold.count}
+    #=>             * Total Buy: #{@all_buy.count}
+    #=>
+    #=>     Most Sold Ticker for #{documents.week}: #{@hot_sell_tick}
+    #=>     Most Bought Ticker for #{documents.week}: #{@hot_buy_tick}
+    #=>     
+     
+        puts    "To go back menu type '1', to exit Ark Tracker, type '0' "
+</option 1>
+puts "to see $ARKK movement for this week, type '2' "
+<option 2>
+    #=> 
+    #=>     $ARKK Movement for #{this.week}
+    #=>     ---------------------------------------
+    #=>     ARK INNOVATION ETF
+    #=>       $ #{@arkk.share_price}
+    #=>         Price Change This Week:
+    #=>            #{dollar amount change for week} #{percent change} past week
+    #=>
+    #=>             * $ARKK has increased/decreased by $x today
+    #=>              * $ARKK has increased/decreased by $x this month
+    #=>               * $ARKK has increased/decreased by $x since 2021 
+    #=>
+        puts    "To go back menu type '1', to exit Ark Tracker, type '0' " 
+</option 2>    
 
-        "to see all transations for #{documents.week}, type '1' "
+puts    "If you're feeling lucky, type 'lucky' "
+//finds stock info for one stock found in @hot_buy_tick 
+//returns the api data of the stock found 
+<option lucky>
+    #=> 
+    #=>     ✩ Cathie's Pick ✩
+    #=>     ---------------------------------------
+    #=>     PAYPAL HOLDINGS INC
+    #=>       $ #{@pypl.share_price}
+    #=>         Price Change This Week: 
+    #=>            #{dollar amount change for week} #{percent change} past week
+    #=>
+    #=>             * ARK Invest has increased stake in #{@hot_buy_tick}
+    #=>              * #{@hot_buy_tick} has increased/decreased by $x this month
+    #=>               * #{@hot_buy_tick} has increased/decreased by $x since 2021 
+    #=>
+        puts    "To go back menu type '1', to exit Ark Tracker, type '0' " 
+</option lucky>  
 
-            #=> "$ARKK transations for #{documents.week}"
-            #=> "---------------------------------------"
-            #=>     "total transations #{@all_transations.count}"
-            #=>
-            #=>     "total sold #{@all_sold.count}"
-            #=>     "total buy #{@all_buy.count}"
-            #=>
-            #=>     "Most Sold Ticker for #{documents.week}: #{@hot_sell_tick}"
-            #=>     "Most Bought Ticker for #{documents.week}: #{@hot_buy_tick}"
-            #=>
-            #=>       "to go back type '1', to exit Ark Tracker, type '0' "
+//if tesla? == true add final item to Arkk.menu 
+puts    "to see all $TSLA transactions type 'moon'
+<option moon>
+    #=> 
+    #=>     $TSLA movement for #{this.week}
+    #=>     ---------------------------------------
+    #=>     TESLA, INC.
+    #=>       $ #{tsla.share_price}
+    #=>         price change #{this.week}
+    #=>            #{dollar amount change for week} #{percent change} past week
+    #=>
+    #=>             * ARK Invest, #{this.week}, has #{increased/decreased} stake in Tesla
+    #=>              * $TSLA has #{increased/decreased} by $x this month
+    #=>               * $TSLA has #{increased/decreased} by $x since 2021 
+    #=>
+        puts    "to go back menu type '1', to exit Ark Tracker, type '0' " 
+</option moon> 
 
-        "to see $ARKK movement for this week, type '2' "
+<option exit>
 
-            #=> "
-            
-    //if tesla?
-         "to see all $TSLA type 'moon'
+    #=>     #{quote from quote api}
+    #=>     ---------------------------------------
+    #=>     Lucky Numbers: 
+    #=>         #{lucky number api}
+    #=>     ---------------------------------------
+    #=>     Thank you for using Ark Tracker!
+    #=>         May the odds be in your favor
 
-
+</option exit>
 
 
