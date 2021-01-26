@@ -1,10 +1,37 @@
 class Arkk
+    # METHODS THAT NEED TO BE DEFINED 
+    #
+    # Arkk.call ✓
+    # Arkk.market?
+    # todays_date
+    # arkk_share_price
+    # arkk_percent_change
+    # documents_week
+    # Arkk.tesla?
+    # tsla_buy
+    # tsla_sell
+    # Arkk.menu
+    # all_transactions
+    # all_sold
+    # all_buy
+    # hot_buy_tick
+    # hot_sell_tick 
+    # Arkk.this_week
+    # Arkk.(increased/decreased (by $x))
+    # 
+    # also need stock, quote and fortune api
 
     def initialize(doc)
         @arkk_share_price #defined
             #//find the most recent $ARKK Market Price 
         @arkk_percent_change
             #//finds the current intraday percentage chage for #{todays date}
+        @documents_week
+            #//
+        @tsla_buy
+            #//found $tsla transactions 
+        @tsla_sell
+            #//
         @all_transactions 
             #//all securities transactions 
         @all_sold = []
@@ -13,40 +40,33 @@ class Arkk
             #//securities bought for the week
         @all_ticker = []
             #//all tickers for the week
-        @all_docs
-            #//all 5 trading docs for the week 
         @hot_buy_tick
             #//returns the tick of the most bought stock 4 da week 
         @hot_sell_tick
             #//returns the tick of the most sold stock 4 da week
-        @tsla.buy
-            #//found $tsla transactions 
     end 
 
     def call 
-
         puts "Welcome to Ark Tracker"
         puts    "in Cathie we trust"
-
         if Arkk.market? == false 
             puts  "the NYSE is currently closed" 
         else
-            puts "$ARKK for #{todays date}"
+            puts "$ARKK for #{todays_date}"
             puts "#{@arkk_share_price} per share"
                      #//finds the current share price from robinhood api 
             puts "#{@arkk_percent_change} today"
                      #//finds the current intraday percentage chage for #{todays date}
-            puts "ARKK intraday tracker availble for #{documents.week}"
+            puts "ARKK intraday tracker availble for #{documents_week}"
                      #//goes thru the fold of exiting trade documents 
         end
-
         if tesla? == false             
-            puts "there have been no $TSLA trades within ARK for #{documents.week}"
+            puts "there have been no $TSLA trades within ARK for #{documents_week}"
         else 
-            puts "$TSLA transactions within ARK #{documents.week}"
+            puts "$TSLA transactions within ARK #{documents_week}"
             puts "---------------------------------------------"
-            puts "$TSLA buys: #{@tsla.buy}"
-            puts "$TSLA sells: #{@tsla.sell}"
+            puts "$TSLA buys: #{@tsla_buy}"
+            puts "$TSLA sells: #{@tsla_sell}"
         end
     end
 
@@ -54,13 +74,36 @@ class Arkk
         #//return t/f to check if market is open 
         #//returns f when NYSE is closed (holidays/weekends/afterhours)
     end 
-    
+
     def menu
+        puts "To see all Ark ETF transactions for #{documents.week}, type '1'"
+        puts "To see $ARKK movement for this week, type '2'"
+        puts "If you're feeling lucky, type 'lucky'"
         if tesla?
-            puts "To see all Ark ETF transactions for #{documents.week}, type '1'"
-            puts "To see $ARKK movement for this week, type '2'"
-            puts "If you're feeling lucky, type 'lucky'"
             puts "To see all of ARK Invest's $TSLA transactions, type 'moon'"
+        end
+        puts "To exit Ark Tracker, type '0' "
+
+        input = gets.strip 
+
+        case input 
+
+        when "1"
+            
+        when "2"
+            
+        when "lucky"
+            
+        when "moon"
+            
+        when "exit"
+
+        else
+            "invalid value"
+        end
+        
+
+
     end 
 
     def arkk_share_price
@@ -97,8 +140,8 @@ class Arkk
             // #=> [ticker: $tsla {
             // #=> 			buys: #{sum of "shares" cells where "direction" == buy}
             // #=>          sells: #{sum of "shares" cells where "direction" == sell}
-        2. @tsla.buy << $tsla buys 
-        3. @tsla.sell << $tsla sells
+        2. @tsla_buy << $tsla buys 
+        3. @tsla_sell << $tsla sells
     end
     
     def self.tesla

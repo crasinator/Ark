@@ -11,21 +11,21 @@ puts    "in Cathie we trust"
 //if Arkk.market? == false 
     puts  "the NYSE is currently closed" 
 //else
-    puts "$ARKK for #{todays date}"
-    puts     "#{@arkk.share_price} per share"
+    puts "$ARKK for #{todays_date}"
+    puts     "#{@arkk_share_price} per share"
                     //finds the current share price from Robinhood api 
-    puts     "#{@ark.percent_change} today"
+    puts     "#{@arkk_percent_change} today"
                     //finds the current intraday percentage change for #{todays date}
         
-    puts "ARK intraday tracker available for #{documents.week}"
+    puts "ARK intraday tracker available for #{@documents_week}"
                     //goes thru the fold of exiting trade documents 
-        if Tesla? == false             
-            puts "there have been no $TSLA trades within ARK for #{documents.week}"
+        if Arkk.tesla? == false             
+            puts "there have been no $TSLA trades within ARK for #{documents_week}"
         else 
-            puts "$TSLA transactions within ARK #{documents.week}
+            puts "$TSLA transactions within ARK #{documents_week}
             puts "---------------------------------------------"
-            puts "$TSLA buys: #{@tsla.buy}
-            puts "$TSLA sells: #{@tsla.sell}
+            puts "$TSLA buys: #{tsla_buy}
+            puts "$TSLA sells: #{@tsla_sell}
         end
 //end
 -----------------------------------
@@ -33,29 +33,30 @@ Arkk.menu
 -----------------------------------
 puts "What would you like to do?" 
 
-puts    "To see all Ark ETF transactions for #{documents.week}, type '1' "
+puts    "To see all Ark ETF transactions for #{documents_week}, type '1' "
 <option 1>
     #=> 
-    #=>     ARK Transactions for #{documents.week}
+    #=>     ARK Transactions for #{documents_week}
     #=>     ---------------------------------------
     #=>     Total Transactions #{@all_transactions.count}
     #=>
     #=>             * Total Sold: #{@all_sold.count}
     #=>             * Total Buy: #{@all_buy.count}
     #=>
-    #=>     Most Sold Ticker for #{documents.week}: #{@hot_sell_tick}
-    #=>     Most Bought Ticker for #{documents.week}: #{@hot_buy_tick}
+    #=>     Most Sold Ticker for #{documents_week}: #{@hot_sell_tick}
+    #=>     Most Bought Ticker for #{documents_week}: #{@hot_buy_tick}
     #=>     
      
         puts    "To go back menu type '1', to exit Ark Tracker, type '0' "
 </option 1>
 puts "to see $ARKK movement for this week, type '2' "
 <option 2>
+-arkk.price
     #=> 
-    #=>     $ARKK Movement for #{this.week}
+    #=>     $ARKK Movement for #{this_week}
     #=>     ---------------------------------------
     #=>     ARK INNOVATION ETF
-    #=>       $ #{@arkk.share_price}
+    #=>       $ #{@arkk_share_price}
     #=>         Price Change This Week:
     #=>            #{dollar amount change for week} #{percent change} past week
     #=>
