@@ -12,9 +12,8 @@ puts    "in Cathie we trust"
     puts  "the NYSE is currently closed" 
 //else
     puts "$ARKK for #{todays_date}"
-    puts     "#{@arkk_share_price} per share"
-                    //finds the current share price from Robinhood api 
-    puts     "#{@arkk_percent_change} today"
+    puts     "#{stock.arkk_close} per share"
+    puts     "$ARKK opened at #{stock.arkk_open} today"
                     //finds the current intraday percentage change for #{todays date}
         
     puts "ARK intraday tracker available for #{@documents_week}"
@@ -56,7 +55,7 @@ puts "to see $ARKK movement for this week, type '2' "
     #=>     $ARKK Movement for #{this_week}
     #=>     ---------------------------------------
     #=>     ARK INNOVATION ETF
-    #=>       $ #{@arkk_share_price}
+    #=>       $ #{stock.arkk_close}
     #=>         Price Change This Week:
     #=>            #{dollar amount change for week} #{percent change} past week
     #=>

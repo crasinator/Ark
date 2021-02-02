@@ -1,2 +1,43 @@
+//get data from api
+
+
+stock = Twelvedata.new
+
+stock.startup
+
+stock.tsla_open
+
+stock.tsla_close
+
+stock.tsla_percent_change
+
+//get data from excel docs 
+
+
+//
+
+ween = Arkk.new(stock)
+
 Arkk.call
 Arkk.menu
+
+ween.call
+
+
+
+
+
+
+START
+
+stock = Twelvedata.new
+
+stock.startup
+
+ween = Arkk.new(stock)
+
+ween.call
+
+wee.menu
+
+ween.done

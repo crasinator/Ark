@@ -4,286 +4,172 @@ require 'httparty'
 require 'json'
 
 class Twelvedata
+    attr_accessor :arkk_open, :arkk_close
     include HTTParty
     base_uri "api.twelvedata.com/"
 
+    def startup
+        self.arkk
+        self.tsla
+        self.pypl
+    end
+
+    def stock
+        stock = self.new
+        stock.startup
+        @stock = stock
+    end 
+
     def arkk
-       var = self.class.get ('/time_series?symbol=ARKK&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8')
-    end  
+        arkk_info = '/time_series?symbol=ARKK&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8'
+        
+        var = self.class.get(arkk_info)
+        @arkk_open = var["values"][0]["open"].to_i
+        @arkk_close = var["values"][0]["close"].to_i
+        @arkk_symbol = var["meta"]["symbol"]
+        @arkk_percent = (100.0 * (@arkk_close - @arkk_open) / @arkk_open) * 100 
+        puts "$ARKK DATA HAS BEEN UPDATED"
+        return "------------------------"
+    end 
+
+    def arkk_open
+        @arkk_open
+    end 
+    
+    def arkk_close
+        @arkk_close
+    end 
 
     def arkk_symbol
-        self.arkk["meta"]["symbol"]
+        @arkk_symbol
     end 
-
-    def arkk_price
-        self.arkk["values"][0]["close"]
-    end 
-
-    def tsla
-        var = self.class.get ('/time_series?symbol=TSLA&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8')
+ 
+    def arkk_percent_change
+        (@arkk_percent).round / 100.0
     end  
 
-    def tsla_symbol
-        self.tsla["meta"]["symbol"]
+    def tsla
+        tsla_info = '/time_series?symbol=TSLA&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8'
+
+        var = self.class.get(tsla_info)
+
+        @tsla_open = var["values"][0]["open"].to_i
+        @tsla_close = var["values"][0]["close"].to_i
+        @tsla_symbol = var["meta"]["symbol"]
+        @tsla_percent = (100.0 * (@tsla_close - @tsla_open ) / @tsla_open) * 100 
+        puts "$TSLA DATA HAS BEEN UPDATED"
+        return "------------------------"
+    end  
+
+    def tsla_open
+        @tsla_open
+    end 
+    
+    def tsla_close
+        @tsla_close
     end 
 
-    def tsla_price
-        self.tsla["values"][0]["close"]
+    def tsla_symbol
+        @tsla_symbol
+    end 
+ 
+    def tsla_percent_change
+        (@tsla_percent).round / 100.0
     end 
 
     def pypl
-        var = self.class.get ('/time_series?symbol=PYPL&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8')
+        pypl_info = '/time_series?symbol=PYPL&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8'
+        
+        var = self.class.get(pypl_info)
+
+        @pypl_open = var["values"][0]["open"].to_i
+        @pypl_close = var["values"][0]["close"].to_i
+        @pypl_symbol = var["meta"]["symbol"]
+        @pypl_percent = (100.0 * (@pypl_close - @pypl_open) / @pypl_open) * 100 
+        puts "stock DATA HAS BEEN UPDATED"
+        return "------------------------"
     end  
 
-    def pypl_symbol
-        self.pypl["meta"]["symbol"]
-    end 
-
-end 
-ween.pypl["meta"]["symbol"]
-ween.tsla["meta"]["symbol"]
-# symbol name 
-# ween.arkk["meta"]["symbol"]
-# => "ARKK" 
-
-# security type
-# ween.arkk["meta"]["type"]
-# => "ETF"
-
-# ARKK at close
-# ween.arkk["values"][0]["close"]
-# => "140.38240" 
-
-ween = Twelvedata.new
-
-ween.map.do |x| 
-x.map.do |y| 
-if y.include?("ETF")
-    return y
-end 
-end 
-
-
-
-ween.arkk.find {|k, v| k == "meta" }
-
-ween{"meta"}{"type"}
-
-balls.find {|k| k == "type"}
-
-    def tsla
-        self.class.get ('/time_series?symbol=ARKK&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8')
-    end 
-
-    def tsla
-    self.class.get ('/time_series?symbol=ARKK&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8')
-    end 
-
-    def market? 
-
+    def pypl_open
+        @pypl_open
     end 
     
+    def pypl_close
+        @pypl_close
+    end 
 
-    def 
-end 
+    def pypl_symbol
+        @pypl_symbol
+    end 
+ 
+    def pypl_percent_change
+        (@pypl_percent).round / 100.0
+    end 
 
-ween = Twelvedata.new
-puts ween.arkk
+end
+
+
+
 class Arkk
-    # METHODS THAT NEED TO BE DEFINED 
-    #
-    # Arkk.call ✓
-    # Arkk.market?
-    # todays_date
-    # arkk_share_price
-    # arkk_percent_change
-    # documents_week
-    # Arkk.tesla?
-    # tsla_buy
-    # tsla_sell
-    # Arkk.menu
-    # all_transactions
-    # all_sold
-    # all_buy
-    # hot_buy_tick
-    # hot_sell_tick 
-    # Arkk.this_week
-    # Arkk.(increased/decreased (by $x))
-    # 
-    # also need stock, quote and fortune api
+    include HTTParty
+    base_uri "type.fit/"
 
-    #Stock API 
-        #https://api.twelvedata.com/time_series?symbol=ARKK,TSLA,PYPL&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8
-            #This has json data for $ARKK, $TSLA, $PYPL
-            #Can change the ticker by changing the value before comma (all caps)
-            #Can change the interval of refresh - time frame (e.g. 1day, 1week, 1month)
-            #can show hi/ low for day 
-            #  "ARKK": {
-            # "meta": {
-            #     "symbol": "ARKK",
-            #     "interval": "1day",
-            #     "currency": "USD",
-            #     "exchange_timezone": "America/New_York",
-            #     "exchange": "NYSE",
-            #     "type": "ETF"
-            # },
-            # "values": [
-            #     {
-            #     "datetime": "2021-01-26",
-            #     "open": "146.66000",
-            #     "high": "147.34000",
-            #     "low": "141.73000",
-            #     "close": "141.84000",
-            #     "volume": "8014706"
-            #     },
-            #     {
-
-
-    def initialize(doc)
-        @arkk_share_price #defined
-            #//find the most recent $ARKK Market Price 
-        @arkk_percent_change
-            #//finds the current intraday percentage chage for #{todays date}
-        @documents_week
-            #//
-        @tsla_buy
-            #//found $tsla transactions 
-        @tsla_sell
-            #//
-        @all_transactions 
-            #//all securities transactions 
-        @all_sold = []
-            #//securities sold for the week
-        @all_buy = []
-            #//securities bought for the week
-        @all_ticker = []
-            #//all tickers for the week
-        @hot_buy_tick
-            #//returns the tick of the most bought stock 4 da week 
-        @hot_sell_tick
-            #//returns the tick of the most sold stock 4 da week
+    def initialize(stock)
+        @stock = stock
     end 
 
     def call 
+        puts "\e[H\e[2J"
+        time = Time.new
+
         puts "Welcome to Ark Tracker"
-        puts    "in Cathie we trust"
-        # if Arkk.market? == false 
-        #     puts  "the NYSE is currently closed" 
-        # else
-            puts "$ARKK for #{todays_date}"
-            puts "#{@arkk_share_price} per share"
-                     #//finds the current share price from robinhood api 
-            puts "#{@arkk_percent_change} today"
-                     #//finds the current intraday percentage chage for #{todays date}
-            puts "ARKK intraday tracker availble for #{documents_week}"
-                     #//goes thru the fold of exiting trade documents 
-        # end
-        if tesla? == false             
-            puts "there have been no $TSLA trades within ARK for #{documents_week}"
-        else 
-            puts "$TSLA transactions within ARK #{documents_week}"
-            puts "---------------------------------------------"
-            puts "$TSLA buys: #{@tsla_buy}"
-            puts "$TSLA sells: #{@tsla_sell}"
-        end
+        sleep(1)
+        puts    "      in Cathie we trust"
+        sleep(1)
+        puts "---------------------------------------------"
+        puts "$ARKK for #{time.strftime("%d/%m/%Y")}"
+        puts "   $#{@stock.arkk_close} per share"
+        sleep(0.5)
+        puts "       $ARKK opened at $#{@stock.arkk_open} today"
+        sleep(1)
+        puts "---------------------------------------------"
+        puts "ARKK intraday tracker availble for documents_week"
+        sleep(1)
+        puts "---------------------------------------------"
+        puts "There have been no $TSLA trades within ARK for documents_week"
+        puts "$TSLA transactions within ARK documents_week"
+        sleep(1)
+        puts "---------------------------------------------"
+        puts "$TSLA buys: @tsla_buy}"
+        puts "$TSLA sells: @tsla_sell}"
+        sleep(1)
+        puts "---------------------------------------------"
     end
 
-    def market? 
-        if weekend || holiday || weekend 
+    
 
+    def done
 
-        #//return t/f to check if market is open 
-        #//returns f when NYSE is closed (holidays/weekends/afterhours)
-    end 
+        lucky = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
 
-    def menu
-        puts "To see all Ark ETF transactions for #{documents.week}, type '1'"
-        puts "To see $ARKK movement for this week, type '2'"
-        puts "If you're feeling lucky, type 'lucky'"
-        if tesla?
-            puts "To see all of ARK Invest's $TSLA transactions, type 'moon'"
-        end
-        puts "To exit Ark Tracker, type '0' "
+        sample = lucky.sample(5)
 
-        input = gets.strip 
+        puts "\e[H\e[2J"
 
-        case input 
-
-        when "1"
-            
-        when "2"
-            
-        when "lucky"
-            
-        when "moon"
-            
-        when "exit"
-
-        else
-            "invalid value"
-        end
+        puts "#=>     ---------------------------------------"
+        puts "#=>     Lucky Numbers: "
+        puts "#=>     #{sample.sort}"
+        sleep(1)
+        puts "#=>     ---------------------------------------"
+        puts "#=>     Thank you for using Ark Tracker!"
+        puts "#=>         May the odds be in your favor "    
+        sleep(1) 
+        puts "#=>     ---------------------------------------"
         
-
-
-    end 
-
-    def arkk_share_price
-            1. go to stock api 
-            2. find $ARKK Market Price 
-            3. store in @arkk_share_price
-    end 
-
-    def all_ticker 
-        arr = []
-        1. go thru each document, collect all tickers 
-        2. @all_tickers  << arr.uniq
-    end 
-    
-    def tesla?
-    #//returns t/f if ark has traded $tsla for said range
-        var = @all_ticker.find do |ticker|
-            ticker == "TSLA"
-        end
-            if var == nil 
-                false 
-            else 
-                true 
-            end 
-    end 
-    
-    def tsla 
-    #// if there are tsla trades, return sold/bought count 
-        1. find all $tsla transactions 
-            a. go thru each doc
-            b. find ticker tsla; collect all info in that row 
-                *seperate buys and sells 
-                *add the total shares for each row 
-            // #=> [ticker: $tsla {
-            // #=> 			buys: #{sum of "shares" cells where "direction" == buy}
-            // #=>          sells: #{sum of "shares" cells where "direction" == sell}
-        2. @tsla_buy << $tsla buys 
-        3. @tsla_sell << $tsla sells
     end
     
-    def self.tesla
-    #//returns all known tesla transactions 
-    end 
-    
-    
-    def all_sold 
-    #//securities sold for the week
-        1. go thru doc - direction 
-        a. find buy and push into arr @all_buy
-        b. find buy and push into arr @all_buy
-        
-        2. store in all transactions in @all_sold
-    end
-    
-    def most_sold 
-        1. go thru all sold, consolidate
-        2. return "$" + the ticker with the highest number shares sold
-            #=> $PLTR 
-    end 
 
     
 end 
+
+
