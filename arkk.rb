@@ -111,8 +111,7 @@ end
 
 
 class Arkk
-    include HTTParty
-    base_uri "type.fit/"
+  
 
     def initialize(stock)
         @stock = stock
@@ -129,7 +128,6 @@ class Arkk
         puts "---------------------------------------------"
         puts "$ARKK for #{time.strftime("%d/%m/%Y")}"
         puts "   $#{@stock.arkk_close} per share"
-        sleep(0.5)
         puts "       $ARKK opened at $#{@stock.arkk_open} today"
         sleep(1)
         puts "---------------------------------------------"
@@ -144,9 +142,9 @@ class Arkk
         puts "$TSLA sells: @tsla_sell}"
         sleep(1)
         puts "---------------------------------------------"
-    end
 
-    
+        self.menu
+    end
 
     def done
 
@@ -155,21 +153,88 @@ class Arkk
         sample = lucky.sample(5)
 
         puts "\e[H\e[2J"
-
+        sleep(0.5) 
         puts "#=>     ---------------------------------------"
         puts "#=>     Lucky Numbers: "
-        puts "#=>     #{sample.sort}"
-        sleep(1)
+        puts "#=>        #{sample.sort}"
         puts "#=>     ---------------------------------------"
+        sleep(1) 
         puts "#=>     Thank you for using Ark Tracker!"
         puts "#=>         May the odds be in your favor "    
-        sleep(1) 
         puts "#=>     ---------------------------------------"
         
     end
-    
 
-    
+    def menu
+        puts "To see all Ark ETF transactions for documents.week, type '1'"
+        sleep(0.5)
+        puts "To see $ARKK movement for this week, type '2'"
+        sleep(0.5)
+        puts "If you're feeling lucky, type '3'"
+        sleep(0.5)
+        puts "To see all of ARK Invest's $TSLA transactions, type '40'"
+        sleep(0.5)
+        puts "To exit Ark Tracker, type '0'"
+
+        input = gets.chomp
+        
+        
+        user_in = input.to_i
+
+        
+            case user_in
+               
+                when 0 
+                    self.done
+                when 2
+                    self.arkk_move
+                when 3 
+                    self.cathie
+                else
+                    puts "\e[H\e[2J"
+                    puts "invalid value. try again"
+                    sleep(0.5)
+                    self.menu
+            end 
+
+    end
+
+    def arkk_move 
+        puts "\e[H\e[2J"
+        time = Time.new
+            
+        puts  "#=>     $ARKK Movement for #{time.strftime("%d/%m/%Y")}"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     ARK INNOVATION ETF"
+        puts  "#=>       $#{@stock.arkk_close}"  
+        puts  "#=>            #{@stock.arkk_percent_change}%"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>"
+
+        self.menu
+    end
+
+    def cathie
+        puts "\e[H\e[2J"
+        time = Time.new
+            
+        puts  "#=>     ✩ Cathie's Pick ✩ #{time.strftime("%d/%m/%Y")}"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     PAYPAL HOLDINGS INC"
+        puts  "#=>       $#{@stock.pypl_close}"  
+        puts  "#=>            #{@stock.arkk_percent_change}%"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>"
+
+        self.menu
+    end 
+
+    File.open("","r") do |file|
+
+    end
+
+  
 end 
+
 
 
