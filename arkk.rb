@@ -1,7 +1,11 @@
 require 'rubygems'
+require 'roo'
+require 'pry'
 require 'httparty'
+require 'date'
 
 require 'json'
+
 
 class Twelvedata
     attr_accessor :arkk_open, :arkk_close
@@ -115,11 +119,32 @@ class Arkk
 
     def initialize(stock)
         @stock = stock
+        @buys = []
+        @sells = []
+        @buy_share_count = []
+        @sell_share_count = []
+        self.doc
+    end 
+
+    def sell_share_count 
+        @sell_share_count.inject(:+)
+    end 
+
+    def buy_share_count
+        @buy_share_count.inject(:+)
+    end 
+
+    def sells 
+        @sells
+    end
+
+    def buys
+        @buys 
     end 
 
     def call 
         puts "\e[H\e[2J"
-        time = Time.new
+        time = DateTime.now
 
         puts "Welcome to Ark Tracker"
         sleep(1)
@@ -127,25 +152,106 @@ class Arkk
         sleep(1)
         puts "---------------------------------------------"
         puts "$ARKK for #{time.strftime("%d/%m/%Y")}"
-        puts "   $#{@stock.arkk_close} per share"
-        puts "       $ARKK opened at $#{@stock.arkk_open} today"
+        puts "  $#{@stock.arkk_close} per share"
+        puts "      $ARKK opened at $#{@stock.arkk_open} today"
         sleep(1)
         puts "---------------------------------------------"
-        puts "ARKK intraday tracker availble for documents_week"
-        sleep(1)
-        puts "---------------------------------------------"
-        puts "There have been no $TSLA trades within ARK for documents_week"
-        puts "$TSLA transactions within ARK documents_week"
-        sleep(1)
-        puts "---------------------------------------------"
-        puts "$TSLA buys: @tsla_buy}"
-        puts "$TSLA sells: @tsla_sell}"
+        puts "ARKK intraday tracker availble"
+        puts "  #{self.buy_share_count} shares purchased "
+        puts "      #{self.sell_share_count} shares sold "
         sleep(1)
         puts "---------------------------------------------"
 
         self.menu
     end
 
+  
+
+    def menu
+        time = DateTime.now
+        puts "#{time.strftime("%d/%m/%Y")}"
+        puts "---------------------------------------------"
+        puts "To see all Ark ETF transactions, type '1'"
+        sleep(0.5)
+        puts "To see $ARKK movement, type '2'"
+        sleep(0.5)
+        puts "To see $TSLA movement, type '3'"
+        sleep(0.5)
+        puts "If you're feeling lucky, type '4'"
+        sleep(0.5)
+        puts ""
+        puts "To exit Ark Tracker, type '0'"
+
+        input = gets.chomp
+        
+        
+        user_in = input.to_i
+
+        
+            case user_in
+               
+                when 0 
+                    self.done
+                when 2
+                    self.arkk_move
+                when 3 
+                    self.tsla_move
+                when 4
+                    self.cathie
+                else
+                    puts "\e[H\e[2J"
+                    puts "invalid value. try again"
+                    sleep(0.5)
+                    self.menu
+            end 
+
+    end
+
+    def arkk_move 
+        puts "\e[H\e[2J"
+        time = DateTime.now
+            
+        puts  "#=>     $ARKK Movement for #{time.strftime("%d/%m/%Y")}"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     ARK INNOVATION ETF"
+        puts  "#=>       $#{@stock.arkk_close}"  
+        puts  "#=>            #{@stock.arkk_percent_change}%"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>"
+
+        self.menu
+    end
+
+    def tsla_move
+        puts "\e[H\e[2J"
+        time = DateTime.now
+
+        puts  "#=>     $TSLA Movement for #{time.strftime("%d/%m/%Y")}"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     Tesla, Inc."
+        puts  "#=>       $#{@stock.tsla_close}"  
+        puts  "#=>            #{@stock.tsla_percent_change}%"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>"
+
+        self.move 
+    end 
+
+    def cathie
+        puts "\e[H\e[2J"
+        time = DateTime.now
+            
+        puts  "#=>     ✩ Cathie's Pick ✩ #{time.strftime("%d/%m/%Y")}"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     PAYPAL HOLDINGS INC"
+        puts  "#=>       $#{@stock.pypl_close}"  
+        puts  "#=>            #{@stock.arkk_percent_change}%"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>"
+
+        self.menu
+    end 
+  
     def done
 
         lucky = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
@@ -165,75 +271,37 @@ class Arkk
         
     end
 
-    def menu
-        puts "To see all Ark ETF transactions for documents.week, type '1'"
-        sleep(0.5)
-        puts "To see $ARKK movement for this week, type '2'"
-        sleep(0.5)
-        puts "If you're feeling lucky, type '3'"
-        sleep(0.5)
-        puts "To see all of ARK Invest's $TSLA transactions, type '40'"
-        sleep(0.5)
-        puts "To exit Ark Tracker, type '0'"
+    def doc 
+        doc = Roo::Excelx.new('arktrade1.xlsx')
+        sheet = doc.sheet(0)
 
-        input = gets.chomp
-        
-        
-        user_in = input.to_i
-
-        
-            case user_in
-               
-                when 0 
-                    self.done
-                when 2
-                    self.arkk_move
-                when 3 
-                    self.cathie
-                else
-                    puts "\e[H\e[2J"
-                    puts "invalid value. try again"
-                    sleep(0.5)
-                    self.menu
-            end 
-
-    end
-
-    def arkk_move 
-        puts "\e[H\e[2J"
-        time = Time.new
-            
-        puts  "#=>     $ARKK Movement for #{time.strftime("%d/%m/%Y")}"
-        puts  "#=>     ---------------------------------------"
-        puts  "#=>     ARK INNOVATION ETF"
-        puts  "#=>       $#{@stock.arkk_close}"  
-        puts  "#=>            #{@stock.arkk_percent_change}%"
-        puts  "#=>     ---------------------------------------"
-        puts  "#=>"
-
-        self.menu
-    end
-
-    def cathie
-        puts "\e[H\e[2J"
-        time = Time.new
-            
-        puts  "#=>     ✩ Cathie's Pick ✩ #{time.strftime("%d/%m/%Y")}"
-        puts  "#=>     ---------------------------------------"
-        puts  "#=>     PAYPAL HOLDINGS INC"
-        puts  "#=>       $#{@stock.pypl_close}"  
-        puts  "#=>            #{@stock.arkk_percent_change}%"
-        puts  "#=>     ---------------------------------------"
-        puts  "#=>"
-
-        self.menu
+        sheet.each(
+            tick: 'Ticker', 
+            name: 'Name',
+            shares: 'Shares', 
+            direction: 'Direction'
+        ) do |info|
+            if info[:direction] == "Buy"
+                test = Hash.new
+                test[:name] = info[:name]
+                test[:tick] = info[:tick]
+                test[:direction] = "Buy"
+                test[:shares] = info[:shares]
+                @buys << test
+                @buy_share_count << test[:shares].to_i
+            elsif info[:direction] == "Sell"
+                sell = Hash.new
+                sell[:name] = info[:name]
+                sell[:tick] = info[:tick]
+                sell[:direction] = "Sell"
+                sell[:shares] = info[:shares]
+                @sells << sell
+                @sell_share_count << sell[:shares].to_i
+            end
+        end 
     end 
 
-    File.open("","r") do |file|
 
-    end
-
-  
 end 
 
 

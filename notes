@@ -8,12 +8,13 @@ Arkk.call
 puts "Welcome to Ark Tracker"
 puts    "in Cathie we trust"
 
-//if Arkk.market? == false 
-    puts  "the NYSE is currently closed" 
-//else
+# //if Arkk.market? == false 
+#    puts  "the NYSE is currently closed" 
+# //else
     puts "$ARKK for #{todays_date}"
     puts     "#{stock.arkk_close} per share"
     puts     "$ARKK opened at #{stock.arkk_open} today"
+    puts        "change for day: #{stock.arkk_percent_change}%"
                     //finds the current intraday percentage change for #{todays date}
         
     puts "ARK intraday tracker available for #{@documents_week}"
@@ -57,7 +58,7 @@ puts "to see $ARKK movement for this week, type '2' "
     #=>     ARK INNOVATION ETF
     #=>       $ #{stock.arkk_close}
     #=>         Price Change This Week:
-    #=>            #{dollar amount change for week} #{percent change} past week
+    #=>            #{stock.arkk_percent_change}% past week
     #=>
     #=>             * $ARKK has increased/decreased by $x today
     #=>              * $ARKK has increased/decreased by $x this month
@@ -74,7 +75,7 @@ puts    "If you're feeling lucky, type 'lucky' "
     #=>     ✩ Cathie's Pick ✩
     #=>     ---------------------------------------
     #=>     PAYPAL HOLDINGS INC
-    #=>       $ #{@pypl.share_price}
+    #=>       $ #{stock.pypl_close}
     #=>         Price Change This Week: 
     #=>            #{dollar amount change for week} #{percent change} past week
     #=>
@@ -92,7 +93,7 @@ puts    "to see all $TSLA transactions type 'moon'
     #=>     $TSLA movement for #{this.week}
     #=>     ---------------------------------------
     #=>     TESLA, INC.
-    #=>       $ #{tsla.share_price}
+    #=>       $ #{stock.tsla_close}
     #=>         price change #{this.week}
     #=>            #{dollar amount change for week} #{percent change} past week
     #=>
@@ -116,3 +117,379 @@ puts    "to see all $TSLA transactions type 'moon'
 </option exit>
 
 </end>
+
+
+Notes
+
+#    @percent = (@open / @close)  * 100.0 (still trying to figure out the formula)
+# ween.pypl["meta"]["symbol"]
+# ween.tsla["meta"]["symbol"]
+# symbol name 
+# ween.arkk["meta"]["symbol"]
+# => "ARKK" 
+
+# security type
+# ween.arkk["meta"]["type"]
+# => "ETF"
+
+# ARKK at close
+# ween.arkk["values"][0]["close"]
+# => "140.38240" 
+
+stock = Twelvedata.new
+
+stock.startup
+stock.arkk 
+
+API 
+
+  #Stock API 
+        #https://api.twelvedata.com/time_series?symbol=ARKK,TSLA,PYPL&interval=1day&apikey=716b4530d098461283fb2c02408a6bb8
+            #This has json data for $ARKK, $TSLA, $PYPL
+            #Can change the ticker by changing the value before comma (all caps)
+            #Can change the interval of refresh - time frame (e.g. 1day, 1week, 1month)
+            #can show hi/ low for day 
+            #  "ARKK": {
+            # "meta": {
+            #     "symbol": "ARKK",
+            #     "interval": "1day",
+            #     "currency": "USD",
+            #     "exchange_timezone": "America/New_York",
+            #     "exchange": "NYSE",
+            #     "type": "ETF"
+            # },
+            # "values": [
+            #     {
+            #     "datetime": "2021-01-26",
+            #     "open": "146.66000",
+            #     "high": "147.34000",
+            #     "low": "141.73000",
+            #     "close": "141.84000",
+            #     "volume": "8014706"
+            #     },
+            #     {
+
+
+
+checklist
+
+   # METHODS THAT NEED TO BE DEFINED 
+    #
+    # Arkk.call ✓
+    # Arkk.market?
+    # todays_date
+    # arkk_share_price ✓
+    # arkk_percent_change
+    # documents_week
+    # Arkk.tesla?
+    # tsla_buy
+    # tsla_sell
+    # Arkk.menu
+    # all_transactions
+    # all_sold
+    # all_buy
+    # hot_buy_tick
+    # hot_sell_tick 
+    # Arkk.this_week
+    # Arkk.(increased/decreased (by $x))
+    # 
+    # also need stock, quote and fortune api
+
+
+
+
+
+junk code (right now)
+
+    def market? 
+        if weekend || holiday || weekend 
+
+
+        #//return t/f to check if market is open 
+        #//returns f when NYSE is closed (holidays/weekends/afterhours)
+    end 
+
+
+
+
+    def all_ticker 
+        arr = []
+        1. go thru each document, collect all tickers 
+        2. @all_tickers  << arr.uniq
+    end 
+    
+    def tesla?
+    #//returns t/f if ark has traded $tsla for said range
+        var = @all_ticker.find do |ticker|
+            ticker == "TSLA"
+        end
+            if var == nil 
+                false 
+            else 
+                true 
+            end 
+    end 
+    
+    def etf_tsla 
+    #// if there are tsla trades, return sold/bought count 
+        1. find all $tsla transactions 
+            a. go thru each doc
+            b. find ticker tsla; collect all info in that row 
+                *seperate buys and sells 
+                *add the total shares for each row 
+            // #=> [ticker: $tsla {
+            // #=> 			buys: #{sum of "shares" cells where "direction" == buy}
+            // #=>          sells: #{sum of "shares" cells where "direction" == sell}
+        2. @tsla_buy << $tsla buys 
+        3. @tsla_sell << $tsla sells
+    end
+    
+    def self.tesla
+    #//returns all known tesla transactions 
+    end 
+    
+    
+    def all_sold 
+    #//securities sold for the week
+        1. go thru doc - direction 
+        a. find buy and push into arr @all_buy
+        b. find buy and push into arr @all_buy
+        
+        2. store in all transactions in @all_sold
+    end
+    
+    def most_sold 
+        1. go thru all sold, consolidate
+        2. return "$" + the ticker with the highest number shares sold
+            #=> $PLTR 
+    end 
+
+
+     puts  "#=>             * $ARKK has increased/decreased by $x today"
+        puts  "#=>              * $ARKK has increased/decreased by $x this month"
+        puts  "#=>               * $ARKK has increased/decreased by $x since 2021 "
+
+
+
+
+        ticker: "Tick Name"
+cc: 'cc'
+comp_name: "Comapny Name"
+shares: "Share Count"
+percent_of_etf: "%"
+
+ark.last_column(0)
+
+2.6.1 :013 > ark.methods
+ => [:styles, :column, :sheets, :sheet_for, :formatted_value, :set, :first_column, :formula, :last_column, :empty?, :label, :first_row, :last_row, :row, :cell, :workbook, :method_missing, :shared_strings, :rels_files, :sheet_files, :image_rels, :image_files, :comments_files, :celltype, :comment?, :comment, :formula?, :formulas, :font, :images, :to_s, :labels, :comments, :excelx_type, :excelx_value, :excelx_format, :hyperlink?, :hyperlink, :each_row_streaming, :header_line, :default_sheet, :default_sheet=, :sheet, :first_column_as_letter, :last_column_as_letter, :first_last_row_col_for_sheet, :collect_last_row_col_for_sheet, :headers, :close, :header_line=, :inspect, :parse, :cell_type_by_value, :reload, :info, :each_with_pagename, :each, :row_with, :find, :file_type_check, :key_to_num, :key_to_string, :is_stream?, :to_yaml, :to_xml, :to_matrix, :to_csv, :integer_to_timestring, :lazy, :to_h, :include?, :to_set, :max, :min, :to_a, :entries, :sort, :sort_by, :grep, :grep_v, :count, :detect, :find_index, :find_all, :select, :filter, :reject, :collect, :map, :flat_map, :collect_concat, :inject, :reduce, :partition, :group_by, :first, :all?, :any?, :one?, :none?, :minmax, :min_by, :max_by, :minmax_by, :member?, :each_with_index, :reverse_each, :each_entry, :each_slice, :each_cons, :each_with_object, :zip, :take, :take_while, :drop, :drop_while, :cycle, :chunk, :slice_before, :slice_after, :slice_when, :chunk_while, :sum, :uniq, :chain, :instance_variable_defined?, :remove_instance_variable, :instance_of?, :kind_of?, :is_a?, :tap, :instance_variable_set, :protected_methods, :instance_variables, :instance_variable_get, :public_methods, :private_methods, :method, :public_method, :public_send, :singleton_method, :define_singleton_method, :extend, :to_enum, :enum_for, :<=>, :===, :=~, :!~, :eql?, :respond_to?, :freeze, :object_id, :send, :display, :nil?, :hash, :class, :singleton_class, :clone, :dup, :itself, :yield_self, :then, :taint, :tainted?, :untaint, :untrust, :untrusted?, :trust, :frozen?, :methods, :singleton_methods, :equal?, :!, :==, :instance_exec, :!=, :instance_eval, :__id__, :__send__] 
+
+
+ ark.each(
+fund: 'Fund Name',
+date: 'Trade Date'
+direction: "D Name"
+) do |hash|
+    hash_key = hash[:name]
+    << hash.inspect
+    binding.pry
+end 
+
+doc_date = ark.cell('b',5)
+
+ark.parse
+
+ark.collect 
+
+
+
+
+
+
+
+
+test = Roo::Excelx.new('arktrade1.xlsx')
+
+ark = test.sheet(0)
+
+
+
+
+{:direction=>"Direction", :tick=>"Ticker", :name=>"Name", :shares=>"Shares"}
+{:direction=>"Buy", :tick=>"NVS", :name=>"NOVARTIS AG", :shares=>299907}
+{:direction=>"Buy", :tick=>"VRTX", :name=>"VERTEX PHARMACEUTICALS INC", :shares=>57100}
+{:direction=>"Sell", :tick=>"TWST", :name=>"TWIST BIOSCIENCE CORP", :shares=>97415}
+{:direction=>"Buy", :tick=>"SPOT", :name=>"SPOTIFY TECHNOLOGY SA", :shares=>385932}
+{:direction=>"Buy", :tick=>"PCAR", :name=>"PACCAR INC", :shares=>318474}
+{:direction=>"Buy", :tick=>"FATE", :name=>"FATE THERAPEUTICS INC", :shares=>98059}
+{:direction=>"Buy", :tick=>"TER", :name=>"TERADYNE INC", :shares=>104809}
+{:direction=>"Sell", :tick=>"ROKU", :name=>"ROKU INC", :shares=>53551}
+{:direction=>"Sell", :tick=>"ONVO", :name=>"ORGANOVO HOLDINGS INC", :shares=>25276}
+{:direction=>"Sell", :tick=>"SPLK", :name=>"SPLUNK INC", :shares=>173800}
+{:direction=>"Buy", :tick=>"TER", :name=>"TERADYNE INC", :shares=>189234}
+{:direction=>"Sell", :tick=>"NNDM", :name=>"NANO DIMENSION LTD", :shares=>310800}
+{:direction=>"Sell", :tick=>"FLIR", :name=>"FLIR SYSTEMS INC", :shares=>50496}
+{:direction=>"Sell", :tick=>"AVAV", :name=>"AEROVIRONMENT INC", :shares=>13095}
+{:direction=>"Sell", :tick=>"BYDDY", :name=>"BYD CO LTD", :shares=>31150}
+{:direction=>"Sell", :tick=>"MTLS", :name=>"MATERIALISE NV", :shares=>47430}
+{:direction=>"Buy", :tick=>"SPOT", :name=>"SPOTIFY TECHNOLOGY SA", :shares=>117796}
+{:direction=>"Sell", :tick=>"PSTG", :name=>"PURE STORAGE INC", :shares=>261344}
+ => 4 
+var = 
+
+new_arr = []
+
+ark.each(direction: 'Direction', tick: 'Ticker', name: 'Name', shares: 'Shares') do |hash|
+ 
+ if :direction == "Buy"
+    new_arr << 
+ end
+ return new_arr
+end 
+
+pull all buys 
+pull all sells 
+
+ark.find do |k, v|
+   v == "Buy"
+end
+
+ark.each(direction: 'Direction', tick: 'Ticker', name: 'Name', shares: 'Shares') do |hash|
+  test = hash.inspect
+    test.map do |x|
+end
+
+
+ark.each(tick: 'Ticker', name: 'Name', shares: 'Shares', direction: 'Direction') do |info|
+if info[:direction] == "Buy"
+ puts info
+ end
+end
+
+=> {:direction=>"Buy", :tick=>"NVS", :name=>"NOVARTIS AG", :shares=>299907}
+{:direction=>"Buy", :tick=>"VRTX", :name=>"VERTEX PHARMACEUTICALS INC", :shares=>57100}
+{:direction=>"Buy", :tick=>"SPOT", :name=>"SPOTIFY TECHNOLOGY SA", :shares=>385932}
+{:direction=>"Buy", :tick=>"PCAR", :name=>"PACCAR INC", :shares=>318474}
+{:direction=>"Buy", :tick=>"FATE", :name=>"FATE THERAPEUTICS INC", :shares=>98059}
+{:direction=>"Buy", :tick=>"TER", :name=>"TERADYNE INC", :shares=>104809}
+{:direction=>"Buy", :tick=>"TER", :name=>"TERADYNE INC", :shares=>189234}
+{:direction=>"Buy", :tick=>"SPOT", :name=>"SPOTIFY TECHNOLOGY SA", :shares=>117796}
+ => 4 
+
+ark.each(direction: 'Direction', tick: 'Ticker', name: 'Name', shares: 'Shares') do |info|
+if info[:direction] == "Sell"
+ puts info
+ end
+end
+
+=>{:direction=>"Sell", :tick=>"TWST", :name=>"TWIST BIOSCIENCE CORP", :shares=>97415}
+{:direction=>"Sell", :tick=>"ROKU", :name=>"ROKU INC", :shares=>53551}
+{:direction=>"Sell", :tick=>"ONVO", :name=>"ORGANOVO HOLDINGS INC", :shares=>25276}
+{:direction=>"Sell", :tick=>"SPLK", :name=>"SPLUNK INC", :shares=>173800}
+{:direction=>"Sell", :tick=>"NNDM", :name=>"NANO DIMENSION LTD", :shares=>310800}
+{:direction=>"Sell", :tick=>"FLIR", :name=>"FLIR SYSTEMS INC", :shares=>50496}
+{:direction=>"Sell", :tick=>"AVAV", :name=>"AEROVIRONMENT INC", :shares=>13095}
+{:direction=>"Sell", :tick=>"BYDDY", :name=>"BYD CO LTD", :shares=>31150}
+{:direction=>"Sell", :tick=>"MTLS", :name=>"MATERIALISE NV", :shares=>47430}
+{:direction=>"Sell", :tick=>"PSTG", :name=>"PURE STORAGE INC", :shares=>261344}
+ => 4 
+
+
+
+ark.each(tick: 'Ticker', name: 'Name', shares: 'Shares', direction: 'Direction') do |info|
+    if info[:direction] == "Buy"
+        trade = Hash.new
+        trade[:name] = info[:name]
+        trade[:tick] = info[:tick]
+        trade[:direction] = "Buy"
+        trade[:shares] = info[:shares]
+        trade[:name]
+    end
+end 
+
+=>
+NOVARTIS AG
+VERTEX PHARMACEUTICALS INC
+SPOTIFY TECHNOLOGY SA
+PACCAR INC
+FATE THERAPEUTICS INC
+TERADYNE INC
+TERADYNE INC
+SPOTIFY TECHNOLOGY SA
+
+
+
+
+
+
+sheet.each(tick: 'Ticker', name: 'Name', shares: 'Shares', direction: 'Direction') do |info|
+    if info[:direction] == "Buy"
+        trade = Hash.new
+        trade[:name] = info[:name]
+        trade[:tick] = info[:tick]
+        trade[:direction] = "Buy"
+        trade[:shares] = info[:shares]
+        @buy_company.push(trade[:name])  
+    end
+end 
+
+
+NOVARTIS AG
+VERTEX PHARMACEUTICALS INC
+SPOTIFY TECHNOLOGY SA
+PACCAR INC
+FATE THERAPEUTICS INC
+TERADYNE INC
+TERADYNE INC
+SPOTIFY TECHNOLOGY SA
+
+
+
+
+
+
+
+ark.each(tick: 'Ticker', name: 'Name', shares: 'Shares', direction: 'Direction') do |info|
+    if info[:direction] == "Buy"
+        trade = Hash.new
+        trade[:name] = info[:name]
+        trade[:tick] = info[:tick]
+        trade[:direction] = "Buy"
+        trade[:shares] = info[:shares]
+        puts trade
+    end
+end 
+
+
+
+ when 1
+                    self.etf_tran 
+                when 2
+                    self.arkk_move
+                when lucky
+                    self.cathie
+                when moon
+                    self.tsla_move
+
+
+
+                      def bookend 
+        puts  "To go back to menu, type '1' "
+        puts  "To exit Ark Tracker, type '0' " 
+
+        input = gets.chomp
+        user_in = input.to_i
+
+        
+        case user_in
+           
+            when 0 
+                self.done
+            when 1
+                self.menu
+            else
+                puts "\e[H\e[2J"
+                puts "invalid value. try again"
+                sleep(0.5)    
+                self.bookend
+        end 
+    end

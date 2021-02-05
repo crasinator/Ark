@@ -25,7 +25,7 @@ ween.call
 
 
 
-
+ween.arkk_move
 
 
 START
@@ -38,6 +38,31 @@ ween = Arkk.new(stock)
 
 ween.call
 
-wee.menu
+ween.menu
 
 ween.done
+
+ween.arkk_move
+
+
+ween.buys 
+
+
+
+
+
+> ween.buys[0]
+ => {:name=>"NOVARTIS AG", :tick=>"NVS", :direction=>"Buy", :shares=>299907} 
+
+ ween.buys 
+ => [{:name=>"NOVARTIS AG", :tick=>"NVS", :direction=>"Buy", :shares=>299907}, {:name=>"VERTEX PHARMACEUTICALS INC", :tick=>"VRTX", :direction=>"Buy", :shares=>57100}, {:name=>"SPOTIFY TECHNOLOGY SA", :tick=>"SPOT", :direction=>"Buy", :shares=>385932}, {:name=>"PACCAR INC", :tick=>"PCAR", :direction=>"Buy", :shares=>318474}, {:name=>"FATE THERAPEUTICS INC", :tick=>"FATE", :direction=>"Buy", :shares=>98059}, {:name=>"TERADYNE INC", :tick=>"TER", :direction=>"Buy", :shares=>104809}, {:name=>"TERADYNE INC", :tick=>"TER", :direction=>"Buy", :shares=>189234}, {:name=>"SPOTIFY TECHNOLOGY SA", :tick=>"SPOT", :direction=>"Buy", :shares=>117796}] 
+2.6.1 :285 > ween.buys[0]
+ => {:name=>"NOVARTIS AG", :tick=>"NVS", :direction=>"Buy", :shares=>299907} 
+2.6.1 :286 > ween.
+
+ween.buy_share_count
+=> total shares sold
+
+(-5).round / 100.0
+
+Time.now.strftime("%d/%m/%Y')
