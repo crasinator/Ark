@@ -1,9 +1,7 @@
 require 'rubygems'
 require 'roo'
-require 'pry'
 require 'httparty'
 require 'date'
-
 require 'json'
 
 
@@ -115,23 +113,26 @@ end
 
 
 class Arkk
-  
 
     def initialize(stock)
         @stock = stock
         @buys = []
-        @sells = []
+        @buy_names = []
         @buy_share_count = []
+        @buy_list = ""
+        @sells = []
+        @sell_names =[]
         @sell_share_count = []
+        @sell_list = ""
         self.doc
     end 
 
     def sell_share_count 
-        @sell_share_count.inject(:+)
+        @sell_share_count.inject(:+).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
     end 
 
     def buy_share_count
-        @buy_share_count.inject(:+)
+        @buy_share_count.inject(:+).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
     end 
 
     def sells 
@@ -140,6 +141,14 @@ class Arkk
 
     def buys
         @buys 
+    end 
+
+    def buy_names
+        @buy_names.uniq
+    end 
+
+    def sell_names
+        @sell_names.uniq
     end 
 
     def call 
@@ -151,7 +160,7 @@ class Arkk
         puts    "      in Cathie we trust"
         sleep(1)
         puts "---------------------------------------------"
-        puts "$ARKK for #{time.strftime("%d/%m/%Y")}"
+        puts "$ARKK for #{time.strftime("%m/%d/%Y")}"
         puts "  $#{@stock.arkk_close} per share"
         puts "      $ARKK opened at $#{@stock.arkk_open} today"
         sleep(1)
@@ -165,12 +174,9 @@ class Arkk
         self.menu
     end
 
-  
-
     def menu
-        time = DateTime.now
-        puts "#{time.strftime("%d/%m/%Y")}"
         puts "---------------------------------------------"
+        sleep(0.5)
         puts "To see all Ark ETF transactions, type '1'"
         sleep(0.5)
         puts "To see $ARKK movement, type '2'"
@@ -180,7 +186,7 @@ class Arkk
         puts "If you're feeling lucky, type '4'"
         sleep(0.5)
         puts ""
-        puts "To exit Ark Tracker, type '0'"
+        puts "Any other input will exit Ark Tracker"
 
         input = gets.chomp
         
@@ -192,6 +198,8 @@ class Arkk
                
                 when 0 
                     self.done
+                when 1 
+                    self.etf 
                 when 2
                     self.arkk_move
                 when 3 
@@ -207,11 +215,45 @@ class Arkk
 
     end
 
+    def buy_list
+       @buy_list = self.buy_names.each do |x|
+            puts "#=>       ✩ #{x}"
+            sleep(0.5)
+        end
+        return nil 
+        
+    end 
+
+    def sell_list
+        @sell_list = self.sell_names.each do |x|
+            puts "#=>       ✩ #{x}"
+            sleep(0.5)
+        end
+        return nil 
+    end 
+
+
+    def etf 
+        puts "\e[H\e[2J"
+
+        puts  "#=>     Ark Investments Trading Desk"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     Ark has increased positions in:"
+        puts  "         #{self.buy_list}"     
+        sleep(0.5)     
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     Ark has decreased positions in:"
+        puts  "         #{self.sell_list}"  
+        sleep(0.5)
+
+        self.menu
+    end 
+
     def arkk_move 
         puts "\e[H\e[2J"
         time = DateTime.now
             
-        puts  "#=>     $ARKK Movement for #{time.strftime("%d/%m/%Y")}"
+        puts  "#=>     $ARKK Movement for #{time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
         puts  "#=>     ARK INNOVATION ETF"
         puts  "#=>       $#{@stock.arkk_close}"  
@@ -226,7 +268,7 @@ class Arkk
         puts "\e[H\e[2J"
         time = DateTime.now
 
-        puts  "#=>     $TSLA Movement for #{time.strftime("%d/%m/%Y")}"
+        puts  "#=>     $TSLA Movement for #{time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
         puts  "#=>     Tesla, Inc."
         puts  "#=>       $#{@stock.tsla_close}"  
@@ -234,14 +276,14 @@ class Arkk
         puts  "#=>     ---------------------------------------"
         puts  "#=>"
 
-        self.move 
+        self.menu
     end 
 
     def cathie
         puts "\e[H\e[2J"
         time = DateTime.now
             
-        puts  "#=>     ✩ Cathie's Pick ✩ #{time.strftime("%d/%m/%Y")}"
+        puts  "#=>     ✩ Cathie's Pick ✩ #{time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
         puts  "#=>     PAYPAL HOLDINGS INC"
         puts  "#=>       $#{@stock.pypl_close}"  
@@ -253,22 +295,20 @@ class Arkk
     end 
   
     def done
+        puts "\e[H\e[2J"
 
         lucky = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
 
         sample = lucky.sample(5)
-
-        puts "\e[H\e[2J"
-        sleep(0.5) 
+    
         puts "#=>     ---------------------------------------"
         puts "#=>     Lucky Numbers: "
         puts "#=>        #{sample.sort}"
         puts "#=>     ---------------------------------------"
-        sleep(1) 
         puts "#=>     Thank you for using Ark Tracker!"
         puts "#=>         May the odds be in your favor "    
         puts "#=>     ---------------------------------------"
-        
+    
     end
 
     def doc 
@@ -288,7 +328,9 @@ class Arkk
                 test[:direction] = "Buy"
                 test[:shares] = info[:shares]
                 @buys << test
+                @buy_names << test[:name]
                 @buy_share_count << test[:shares].to_i
+                
             elsif info[:direction] == "Sell"
                 sell = Hash.new
                 sell[:name] = info[:name]
@@ -296,6 +338,7 @@ class Arkk
                 sell[:direction] = "Sell"
                 sell[:shares] = info[:shares]
                 @sells << sell
+                @sell_names << sell[:name]
                 @sell_share_count << sell[:shares].to_i
             end
         end 

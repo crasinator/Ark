@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'roo'
+require 'httparty'
+require 'date'
+require 'json'
+
+require_relative '../lib/arkCLI.rb'
+require_relative '../lib/arkLogic.rb'
+require_relative '../lib/arkTwelvedata.rb'
+
+api = ArkTwelvedata.new
+
+logic = ArkLogic.new
+
+command = ArkCLI.new(api, logic)
+
+command.call
+
+
+
+

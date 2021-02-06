@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/1) arkk.rb'
+
+stock = Twelvedata.new
+
+stock.startup
+
+ween = Arkk.new(stock)
+
+ween.call
