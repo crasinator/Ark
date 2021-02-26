@@ -5,6 +5,7 @@ Info on intraday trading for the Ark Investment Trading Desk
 
 # Install 
 git clone https://github.com/crasinator/Ark.git
+ruby bin/ArkTrack
 
 
 ![alt text](https://github.com/crasinator/Ark/blob/main/arkExtra/Ark%20Workspace.png)
