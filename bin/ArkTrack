@@ -23,5 +23,3 @@ command = ArkCLI.new(logic)
 command.call
 
 
-
-

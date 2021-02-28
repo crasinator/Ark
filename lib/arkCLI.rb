@@ -2,6 +2,7 @@ class ArkCLI
 
     def initialize(logic)
         @logic = logic
+        @watchlist = []
     end 
 
     def call 
@@ -37,37 +38,32 @@ class ArkCLI
         sleep(0.5)
         puts "To see $TSLA movement, type '3'"
         sleep(0.5)
-        puts "To see sell recomendations, type '4'"
+        puts "To see a sell recomendation, type '4'"
         sleep(0.5)
-        puts "If you're feeling lucky, type '5'"
+        puts "To see a buy recomendation, type '5'"
         sleep(0.5)
         puts ""
         puts "Any other input will exit Ark Tracker"
 
         input = gets.chomp
-        
-        
         user_in = input.to_i
-
-        
-            case user_in
-               
-                when 0 
-                    self.done
-                when 1 
-                    self.etf 
-                when 2
-                    self.arkk_move
-                when 3 
-                    self.tsla_move
-                when 4
-                    self.sell_now
-                when 5
-                    self.cathie
-                else
-                    self.done
-            end 
-
+    
+        case user_in
+            when 0 
+                self.done
+            when 1 
+                self.etf 
+            when 2
+                self.arkk_move
+            when 3 
+                self.tsla_move
+            when 4
+                self.sell_now
+            when 5
+                self.buy_now
+            else
+                self.done
+        end 
     end
 
     def etf 
@@ -88,18 +84,19 @@ class ArkCLI
 
     def arkk_move 
         puts "\e[H\e[2J"
-
-        
             
         puts  "#=>     $ARKK Movement for #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>     #{@arkk.title}"
+        puts  "#=>     #{@arkk.title} [ $#{@arkk.ticker} ]"
         puts  "#=>       $#{@arkk.close}"  
         puts  "#=>            #{@arkk.percent}%"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>"
+        puts  "#=>     #{@arkk.display_fiftytoo_week_range}"
+        puts  "#=>       Market Cap: #{@arkk.market_cap}"
+        puts ""
+        puts "Add to watchlist? (y/n)"
 
-        self.menu
+        self.add_to_watchlist(@arkk)
     end
 
     def tsla_move
@@ -109,13 +106,53 @@ class ArkCLI
 
         puts  "#=>     $TSLA Movement for #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>     #{tsla.title}"
+        puts  "#=>     #{tsla.title} [ $#{tsla.ticker} ]"
         puts  "#=>       $#{tsla.close}"  
         puts  "#=>            #{tsla.percent}%"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>"
+        puts  "#=>     #{tsla.display_fiftytoo_week_range}"
+        puts  "#=>       Market Cap: #{tsla.market_cap}"
+        puts  ""
+        puts  "Add to watchlist? (y/n)"
 
-        self.menu
+        self.add_to_watchlist(tsla)
+    end 
+
+    def add_to_watchlist(stock)
+        input = gets.strip 
+
+        case input 
+        when "y"
+            @watchlist << "#{stock.title} [ $#{stock.ticker} ]"
+            puts "  Added [ $#{stock.ticker} ]"
+            self.menu
+        when "yes"
+            @watchlist << "#{stock.title} [ $#{stock.ticker} ]"
+            puts "  Added [ $#{stock.ticker} ]"
+            self.menu
+        else 
+            self.menu
+        end 
+    end 
+
+    def buy_now
+        puts "\e[H\e[2J"
+
+        ticker = @logic.question_box
+        pick = ArkTwelvedata.get_stock_info(ticker)
+            
+        puts  "#=>     Buy Recomendation #{@time.strftime("%m/%d/%Y")}"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     #{pick.title} [ $#{pick.ticker} ]" 
+        puts  "#=>       $#{pick.close}"  
+        puts  "#=>            #{pick.percent}%"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     #{pick.display_fiftytoo_week_range}"
+        puts  "#=>       Market Cap: #{pick.market_cap}"
+        puts   ""
+        puts  "Add to watchlist? (y/n)"
+
+        self.add_to_watchlist(pick)
     end 
 
     def cathie
@@ -126,58 +163,62 @@ class ArkCLI
             
         puts  "#=>     ✩ Cathie's Pick ✩ #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>     #{pick.title}" 
+        puts  "#=>     #{pick.title} [ $#{pick.ticker} ]" 
         puts  "#=>       $#{pick.close}"  
         puts  "#=>            #{pick.percent}%"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>"
-
-        self.menu
+        puts  "#=>     #{pick.display_fiftytoo_week_range}"
+        puts  "#=>       Market Cap: #{pick.market_cap}"
+        puts   ""
     end 
 
     def sell_now 
-
         puts "\e[H\e[2J"
 
         ticker = @logic.bowser_box
         pick = ArkTwelvedata.get_stock_info(ticker)
             
-        puts  "#=>     ✩ DO NOT BUY ✩ #{@time.strftime("%m/%d/%Y")}"
+        puts  "#=>     Sell Recomendation #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>     #{pick.title}" 
+        puts  "#=>     #{pick.title} [ $#{pick.ticker} ]" 
         puts  "#=>       $#{pick.close}"  
         puts  "#=>            #{pick.percent}%"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>"
+        puts  "#=>     #{pick.display_fiftytoo_week_range}"
+        puts  "#=>       Market Cap: #{pick.market_cap}"
+        puts   ""
+        puts  "Add to watchlist? (y/n)"
 
-        self.menu
-
+        self.add_to_watchlist(pick)
     end 
-
 
     def done
         puts "\e[H\e[2J"
 
-        lucky = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 
-                10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 
-                20, 21, 22, 23, 24, 25,26, 27, 28, 29, 
-                30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 
-                40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 
-                50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 
-                60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 
-                70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 
-                80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 
-                90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+        self.cathie
 
+        lucky = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
         sample = lucky.sample(5)
-    
-        puts "#=>     ---------------------------------------"
+        
+        puts ""
         puts "#=>     Lucky Numbers: "
         puts "#=>        #{sample.sort}"
         puts "#=>     ---------------------------------------"
         puts "#=>     Thank you for using Ark Tracker!"
-        puts "#=>         May the odds be in your favor "    
-        puts "#=>     ---------------------------------------"
+        puts "#=>         May the odds be in your favor "   
+        puts ""
+        
+        if @watchlist.count == 0 
+            puts "Nothing was added to watchlist"   
+        else 
+            puts "Watchlist:"
+            @watchlist.each do |x|
+            puts "       ✩ #{x}"
+            sleep(0.5)
+            end 
+        end 
+
+        puts ""
     end
 
 end 

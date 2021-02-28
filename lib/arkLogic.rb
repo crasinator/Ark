@@ -14,7 +14,7 @@ class ArkLogic
     end 
 
     def doc 
-        doc = Roo::Excelx.new('./fixtures/arktrade1.xlsx')
+        doc = Roo::Excelx.new('./fixtures/arktrade4.xlsx')
         sheet = doc.sheet(0)
 
         sheet.each(
@@ -56,14 +56,15 @@ class ArkLogic
     end 
 
     def bowser_box
-        #picks a stock from lis of sells 
         @sells.sample(1)[0][:tick]
+        #picks a stock from list of sells and returns ticker (symbol)
     end 
 
     def question_box
-        #picks a stock from list of buys and returns symbol
         @buys.sample(1)[0][:tick]
+        #picks a stock from list of buys and returns ticker (symbol)
     end 
+    
     def buy_names
         @buy_names.uniq
     end 
@@ -76,8 +77,7 @@ class ArkLogic
        @buy_list = self.buy_names.each do |x|
             puts "#=>       ✩ #{x}"
             sleep(0.5)
-        end
-        return nil   
+        end 
     end 
 
     def sell_list
@@ -85,7 +85,6 @@ class ArkLogic
             puts "#=>       ✩ #{x}"
             sleep(0.5)
         end
-        return nil 
     end 
 
 end 
