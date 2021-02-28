@@ -8,6 +8,3 @@ gemspec
 gem "rake", "~> 13.0"
 
 
-```ruby
-gem 'ArkTrack'
-```

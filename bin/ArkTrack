@@ -1,0 +1,27 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'roo'
+require 'httparty'
+require 'date'
+require 'json'
+require 'nokogiri'
+require 'open-uri'
+
+require_relative '../lib/arkCLI.rb'
+require_relative '../lib/arkLogic.rb'
+require_relative '../lib/arkTwelvedata.rb'
+require_relative '../lib/robinhood.rb'
+require_relative '../lib/stock.rb'
+
+
+
+logic = ArkLogic.new
+
+command = ArkCLI.new(logic)
+
+command.call
+
+
+
+

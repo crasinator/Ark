@@ -1,22 +1,22 @@
 class ArkCLI
 
-    def initialize(api, logic)
-        @api = api
+    def initialize(logic)
         @logic = logic
     end 
 
     def call 
-        puts "\e[H\e[2J"
-        time = DateTime.now
+        @time = DateTime.now
+        @arkk = ArkTwelvedata.get_stock_info("ARKK")
 
+        puts "\e[H\e[2J"
         puts "Welcome to Ark Tracker"
         sleep(1)
         puts    "      in Cathie we trust"
         sleep(1)
         puts "---------------------------------------------"
-        puts "$ARKK for #{time.strftime("%m/%d/%Y")}"
-        puts "  $#{@api.arkk_close} per share"
-        puts "      $ARKK opened at $#{@api.arkk_open} today"
+        puts "$ARKK for #{@time.strftime("%m/%d/%Y")}"
+        puts "  $#{@arkk.close} per share"
+        puts "      $ARKK opened at $#{@arkk.open} today"
         sleep(1)
         puts "---------------------------------------------"
         puts "ARKK intraday tracker availble"
@@ -37,7 +37,9 @@ class ArkCLI
         sleep(0.5)
         puts "To see $TSLA movement, type '3'"
         sleep(0.5)
-        puts "If you're feeling lucky, type '4'"
+        puts "To see sell recomendations, type '4'"
+        sleep(0.5)
+        puts "If you're feeling lucky, type '5'"
         sleep(0.5)
         puts ""
         puts "Any other input will exit Ark Tracker"
@@ -59,6 +61,8 @@ class ArkCLI
                 when 3 
                     self.tsla_move
                 when 4
+                    self.sell_now
+                when 5
                     self.cathie
                 else
                     self.done
@@ -85,13 +89,13 @@ class ArkCLI
     def arkk_move 
         puts "\e[H\e[2J"
 
-        time = DateTime.now
+        
             
-        puts  "#=>     $ARKK Movement for #{time.strftime("%m/%d/%Y")}"
+        puts  "#=>     $ARKK Movement for #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>     ARK INNOVATION ETF"
-        puts  "#=>       $#{@api.arkk_close}"  
-        puts  "#=>            #{@api.arkk_percent_change}%"
+        puts  "#=>     #{@arkk.title}"
+        puts  "#=>       $#{@arkk.close}"  
+        puts  "#=>            #{@arkk.percent}%"
         puts  "#=>     ---------------------------------------"
         puts  "#=>"
 
@@ -101,13 +105,13 @@ class ArkCLI
     def tsla_move
         puts "\e[H\e[2J"
 
-        time = DateTime.now
+        tsla = ArkTwelvedata.get_stock_info("TSLA")
 
-        puts  "#=>     $TSLA Movement for #{time.strftime("%m/%d/%Y")}"
+        puts  "#=>     $TSLA Movement for #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>     Tesla, Inc."
-        puts  "#=>       $#{@api.tsla_close}"  
-        puts  "#=>            #{@api.tsla_percent_change}%"
+        puts  "#=>     #{tsla.title}"
+        puts  "#=>       $#{tsla.close}"  
+        puts  "#=>            #{tsla.percent}%"
         puts  "#=>     ---------------------------------------"
         puts  "#=>"
 
@@ -116,19 +120,40 @@ class ArkCLI
 
     def cathie
         puts "\e[H\e[2J"
-        
-        time = DateTime.now
+
+        ticker = @logic.question_box
+        pick = ArkTwelvedata.get_stock_info(ticker)
             
-        puts  "#=>     ✩ Cathie's Pick ✩ #{time.strftime("%m/%d/%Y")}"
+        puts  "#=>     ✩ Cathie's Pick ✩ #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
-        puts  "#=>     PAYPAL HOLDINGS INC"
-        puts  "#=>       $#{@api.pypl_close}"  
-        puts  "#=>            #{@api.arkk_percent_change}%"
+        puts  "#=>     #{pick.title}" 
+        puts  "#=>       $#{pick.close}"  
+        puts  "#=>            #{pick.percent}%"
         puts  "#=>     ---------------------------------------"
         puts  "#=>"
 
         self.menu
     end 
+
+    def sell_now 
+
+        puts "\e[H\e[2J"
+
+        ticker = @logic.bowser_box
+        pick = ArkTwelvedata.get_stock_info(ticker)
+            
+        puts  "#=>     ✩ DO NOT BUY ✩ #{@time.strftime("%m/%d/%Y")}"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>     #{pick.title}" 
+        puts  "#=>       $#{pick.close}"  
+        puts  "#=>            #{pick.percent}%"
+        puts  "#=>     ---------------------------------------"
+        puts  "#=>"
+
+        self.menu
+
+    end 
+
 
     def done
         puts "\e[H\e[2J"
@@ -156,3 +181,4 @@ class ArkCLI
     end
 
 end 
+

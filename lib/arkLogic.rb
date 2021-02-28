@@ -1,8 +1,9 @@
-class ArkLogic 
+class ArkLogic  
+    attr_accessor :sells, :buys
 
     def initialize
         @buys = []
-        @buy_names = []
+        @buy_names =[]
         @buy_share_count = []
         @buy_list = ""
         @sells = []
@@ -54,14 +55,15 @@ class ArkLogic
         @buy_share_count.inject(:+).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse
     end 
 
-    def sells 
-        @sells
-    end
-
-    def buys
-        @buys 
+    def bowser_box
+        #picks a stock from lis of sells 
+        @sells.sample(1)[0][:tick]
     end 
 
+    def question_box
+        #picks a stock from list of buys and returns symbol
+        @buys.sample(1)[0][:tick]
+    end 
     def buy_names
         @buy_names.uniq
     end 
@@ -87,3 +89,4 @@ class ArkLogic
     end 
 
 end 
+
