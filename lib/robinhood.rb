@@ -2,7 +2,6 @@ class Robinhood
     def self.get_company_name(ticker)
         site = Nokogiri::HTML(open("https://robinhood.com/stocks/#{ticker}"))
         heading = site.css("h1").text.split(".")
-        
         company_name = heading[0]
     end 
 
@@ -14,8 +13,6 @@ class Robinhood
         marketcap = values[0]
     end 
 end
-
-
 
 # arkk = Robinhood.get_company_info("ARKK")
 #=> "ARK Innovation ETF" 

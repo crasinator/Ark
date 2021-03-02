@@ -93,8 +93,6 @@ class ArkCLI
         puts  "#=>     ---------------------------------------"
         puts  "#=>     #{@arkk.display_fiftytoo_week_range}"
         puts  "#=>       Market Cap: #{@arkk.market_cap}"
-        puts ""
-        puts "Add to watchlist? (y/n)"
 
         self.add_to_watchlist(@arkk)
     end
@@ -112,8 +110,6 @@ class ArkCLI
         puts  "#=>     ---------------------------------------"
         puts  "#=>     #{tsla.display_fiftytoo_week_range}"
         puts  "#=>       Market Cap: #{tsla.market_cap}"
-        puts  ""
-        puts  "Add to watchlist? (y/n)"
 
         self.add_to_watchlist(tsla)
     end 
@@ -132,8 +128,6 @@ class ArkCLI
         puts  "#=>     ---------------------------------------"
         puts  "#=>     #{pick.display_fiftytoo_week_range}"
         puts  "#=>       Market Cap: #{pick.market_cap}"
-        puts   ""
-        puts  "Add to watchlist? (y/n)"
 
         self.add_to_watchlist(pick)
     end 
@@ -169,8 +163,6 @@ class ArkCLI
         puts  "#=>     ---------------------------------------"
         puts  "#=>     #{pick.display_fiftytoo_week_range}"
         puts  "#=>       Market Cap: #{pick.market_cap}"
-        puts   ""
-        puts  "Add to watchlist? (y/n)"
 
         self.add_to_watchlist(pick)
     end 
@@ -205,6 +197,9 @@ class ArkCLI
     end
 
     def add_to_watchlist(stock)
+        puts  ""
+        puts  "Add to watchlist? (y/n)"
+
         input = gets.strip 
 
         case input 

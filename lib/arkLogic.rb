@@ -31,8 +31,7 @@ class ArkLogic
                 test[:shares] = info[:shares]
                 @buys << test
                 @buy_names << test[:name]
-                @buy_share_count << test[:shares].to_i
-                
+                @buy_share_count << test[:shares].to_i 
             elsif info[:direction] == "Sell"
                 sell = Hash.new
                 sell[:name] = info[:name]
@@ -45,7 +44,6 @@ class ArkLogic
             end
         end 
     end 
-
 
     def sell_share_count 
         @sell_share_count.inject(:+).to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse

@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-
 require 'rubygems'
 require 'roo'
 require 'httparty'
@@ -14,12 +13,6 @@ require_relative '../lib/arkTwelvedata.rb'
 require_relative '../lib/robinhood.rb'
 require_relative '../lib/stock.rb'
 
-
-
 logic = ArkLogic.new
-
 command = ArkCLI.new(logic)
-
 command.call
-
-
