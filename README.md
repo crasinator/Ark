@@ -4,7 +4,7 @@ A terminal view of the ARK Invest trading desk. On startup it prints today's ARK
 
 [![Ark Tracker demo](arkExtra/arkScreen.gif)](https://youtu.be/e8SXu_aP5wY)
 
-Live quotes and company names come from Twelve Data. Market cap comes from that ticker's Robinhood page. The buy and sell lists are not a live feed. They are read from `fixtures/arktrade5.xlsx`. That path is resolved from the app, so you can start it from any directory.
+Live quotes and company names come from Yahoo Finance. Market cap comes from that ticker's Robinhood page. The buy and sell lists are not a live feed. They are read from `fixtures/arktrade5.xlsx`. That path is resolved from the app, so you can start it from any directory.
 
 ## Requirements
 
@@ -37,14 +37,11 @@ bundle install
 
 ## Run
 
-Quotes need a Twelve Data API key in the environment. Create one at [twelvedata.com](https://twelvedata.com/), then:
-
 ```bash
-export TWELVE_DATA_API_KEY=your_key_here
 bundle exec ruby bin/ArkTrack
 ```
 
-If the key is missing or Twelve Data rejects it, the app prints the reason instead of crashing. `bundle exec` matters. Plain `ruby bin/ArkTrack` uses whatever `ruby` is first on your `PATH`, and system Ruby does not have these gems.
+If Yahoo Finance rejects a quote, the app prints the reason instead of crashing. `bundle exec` matters. Plain `ruby bin/ArkTrack` uses whatever `ruby` is first on your `PATH`, and system Ruby does not have these gems.
 
 | Input | Action |
 | --- | --- |

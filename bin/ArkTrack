@@ -9,7 +9,7 @@ require 'open-uri'
 
 require_relative '../lib/arkCLI.rb'
 require_relative '../lib/arkLogic.rb'
-require_relative '../lib/arkTwelvedata.rb'
+require_relative '../lib/arkQuote.rb'
 require_relative '../lib/robinhood.rb'
 require_relative '../lib/stock.rb'
 

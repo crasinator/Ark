@@ -10,7 +10,7 @@
 /test/version_tmp/
 /tmp/
 
-# Local secrets. The Twelve Data key belongs here, not in source.
+# Local secrets.
 .env
 
 # Ignore Byebug command history file.

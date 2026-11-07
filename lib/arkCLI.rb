@@ -189,7 +189,7 @@ class ArkCLI
     end
 
     def fetch(ticker)
-        ArkTwelvedata.get_stock_info(ticker)
+        ArkQuote.get_stock_info(ticker)
     rescue StandardError => e
         puts e.message
         nil
