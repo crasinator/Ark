@@ -7,23 +7,20 @@ class ArkCLI
 
     def call 
         @time = DateTime.now
-        @arkk = ArkTwelvedata.get_stock_info("ARKK")
+        @arkk = fetch("ARKK")
+        exit 1 if @arkk.nil?
 
         puts "\e[H\e[2J"
         puts "Welcome to Ark Tracker"
-        sleep(1)
         puts    "      in Cathie we trust"
-        sleep(1)
         puts "---------------------------------------------"
         puts "$ARKK for #{@time.strftime("%m/%d/%Y")}"
         puts "  $#{@arkk.close} per share"
         puts "      $ARKK opened at $#{@arkk.open} today"
-        sleep(1)
         puts "---------------------------------------------"
-        puts "ARKK intraday tracker availble"
+        puts "ARKK intraday tracker available"
         puts "  #{@logic.buy_share_count} shares purchased "
         puts "      #{@logic.sell_share_count} shares sold "
-        sleep(1)
         puts "---------------------------------------------"
 
         self.menu
@@ -31,17 +28,11 @@ class ArkCLI
 
     def menu
         puts "---------------------------------------------"
-        sleep(0.5)
         puts "To see all Ark ETF transactions, type '1'"
-        sleep(0.5)
         puts "To see $ARKK movement, type '2'"
-        sleep(0.5)
         puts "To see $TSLA movement, type '3'"
-        sleep(0.5)
-        puts "To see a sell recomendation, type '4'"
-        sleep(0.5)
-        puts "To see a buy recomendation, type '5'"
-        sleep(0.5)
+        puts "To see a sell recommendation, type '4'"
+        puts "To see a buy recommendation, type '5'"
         puts ""
         puts "Any other input will exit Ark Tracker"
 
@@ -71,10 +62,8 @@ class ArkCLI
 
         puts  "        Ark Investments"
         puts  "#=>     ---------------------------------------"
-        sleep(0.5)
         puts  "#=>     Ark has increased positions in:"
         puts  "         #{@logic.buy_list}"     
-        sleep(0.5)     
         puts  "#=>     ---------------------------------------"
         puts  "#=>     Ark has decreased positions in:"
         puts  "         #{@logic.sell_list}"  
@@ -100,7 +89,8 @@ class ArkCLI
     def tsla_move
         puts "\e[H\e[2J"
 
-        tsla = ArkTwelvedata.get_stock_info("TSLA")
+        tsla = fetch("TSLA")
+        return self.menu if tsla.nil?
 
         puts  "#=>     $TSLA Movement for #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
@@ -118,9 +108,10 @@ class ArkCLI
         puts "\e[H\e[2J"
 
         ticker = @logic.question_box
-        pick = ArkTwelvedata.get_stock_info(ticker)
+        pick = fetch(ticker)
+        return self.menu if pick.nil?
             
-        puts  "#=>     Buy Recomendation #{@time.strftime("%m/%d/%Y")}"
+        puts  "#=>     Buy Recommendation #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
         puts  "#=>     #{pick.title} [ $#{pick.ticker} ]" 
         puts  "#=>       $#{pick.close}"  
@@ -136,7 +127,8 @@ class ArkCLI
         puts "\e[H\e[2J"
 
         ticker = @logic.question_box
-        pick = ArkTwelvedata.get_stock_info(ticker)
+        pick = fetch(ticker)
+        return if pick.nil?
             
         puts  "#=>     ✩ Cathie's Pick ✩ #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
@@ -153,9 +145,10 @@ class ArkCLI
         puts "\e[H\e[2J"
 
         ticker = @logic.bowser_box
-        pick = ArkTwelvedata.get_stock_info(ticker)
+        pick = fetch(ticker)
+        return self.menu if pick.nil?
             
-        puts  "#=>     Sell Recomendation #{@time.strftime("%m/%d/%Y")}"
+        puts  "#=>     Sell Recommendation #{@time.strftime("%m/%d/%Y")}"
         puts  "#=>     ---------------------------------------"
         puts  "#=>     #{pick.title} [ $#{pick.ticker} ]" 
         puts  "#=>       $#{pick.close}"  
@@ -189,11 +182,17 @@ class ArkCLI
             puts "Watchlist:"
             @watchlist.each do |x|
             puts "       ✩ #{x}"
-            sleep(0.5)
             end 
         end 
 
         puts ""
+    end
+
+    def fetch(ticker)
+        ArkTwelvedata.get_stock_info(ticker)
+    rescue StandardError => e
+        puts e.message
+        nil
     end
 
     def add_to_watchlist(stock)

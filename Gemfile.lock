@@ -5,6 +5,7 @@ PATH
       date
       httparty
       json
+      nokogiri
       roo
 
 GEM

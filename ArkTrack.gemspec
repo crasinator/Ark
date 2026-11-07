@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.licenses      = ['MIT']
   spec.summary       = "Info on intraday trading for the Ark Investment Trading Desk"
   spec.homepage      = "https://github.com/crasinator/Ark/"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.3.0")
 
   spec.files = Dir['lib/**/*']
   spec.bindir        = "bin"
@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency  'roo'
   spec.add_dependency  'httparty'
+  spec.add_dependency  'nokogiri'
   spec.add_dependency  'date'
   spec.add_dependency  'json'
 

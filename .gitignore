@@ -10,8 +10,8 @@
 /test/version_tmp/
 /tmp/
 
-# Used by dotenv library to load environment variables.
-# .env
+# Local secrets. The Twelve Data key belongs here, not in source.
+.env
 
 # Ignore Byebug command history file.
 .byebug_history
