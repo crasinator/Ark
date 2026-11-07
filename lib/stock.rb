@@ -6,7 +6,7 @@ class Stock
 
     def initialize(ticker, open, close, percent, title, market_cap, fiftytoo_week)
         @ticker = ticker
-        @open = open 
+        @open = open.to_f.round(2)
         @close = close.to_f.round(2)
         @percent = percent 
         @title = title
@@ -22,7 +22,7 @@ class Stock
     end 
 
     def percent
-        (@percent).round / 100.0
+        @percent.round(2)
     end 
 
     def self.all 

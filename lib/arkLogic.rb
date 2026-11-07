@@ -14,7 +14,8 @@ class ArkLogic
     end 
 
     def doc 
-        doc = Roo::Excelx.new('./fixtures/arktrade5.xlsx')
+        trade_file = File.expand_path("../fixtures/arktrade5.xlsx", __dir__)
+        doc = Roo::Excelx.new(trade_file)
         sheet = doc.sheet(0)
 
         sheet.each(
@@ -74,7 +75,6 @@ class ArkLogic
     def buy_list
        @buy_list = self.buy_names.each do |x|
             puts "#=>       ✩ #{x}"
-            sleep(0.5)
         end 
         return nil
     end 
@@ -82,7 +82,6 @@ class ArkLogic
     def sell_list
         @sell_list = self.sell_names.each do |x|
             puts "#=>       ✩ #{x}"
-            sleep(0.5)
         end
         return nil
     end 

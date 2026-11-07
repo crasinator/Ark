@@ -1,3 +1,6 @@
+require "nokogiri"
+require "open-uri"
+
 class Robinhood
     def self.get_company_name(ticker)
         site = Nokogiri::HTML(URI.open("https://robinhood.com/stocks/#{ticker}"))
@@ -20,6 +23,8 @@ class Robinhood
         else
             format("$%.0f", amount)
         end
+    rescue StandardError
+        "n/a"
     end 
 end
 
