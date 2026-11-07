@@ -17,7 +17,6 @@ Gem::Specification.new do |spec|
   spec.executables   = "ArkTrack"
   spec.require_paths = ["lib"]
 
-  spec.add_dependency  'rubygems'
   spec.add_dependency  'roo'
   spec.add_dependency  'httparty'
   spec.add_dependency  'date'

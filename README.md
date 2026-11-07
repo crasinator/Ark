@@ -1,11 +1,55 @@
-# Ark
-Info on intraday trading for the Ark Investment Trading Desk
+# Ark Tracker
 
-[![SC2 Video](arkExtra/arkScreen.gif)](https://youtu.be/e8SXu_aP5wY)
+A terminal view of the ARK Invest trading desk. On startup it prints today's ARKK quote and the share totals from the bundled trade file, then waits for a menu choice.
 
-# Install 
+[![Ark Tracker demo](arkExtra/arkScreen.gif)](https://youtu.be/e8SXu_aP5wY)
+
+Live quotes come from Twelve Data. The company name and market cap come from that ticker's Robinhood page. The buy and sell lists are not a live feed. They are read from `fixtures/arktrade5.xlsx`, so run the app from the repository root.
+
+## Requirements
+
+- Ruby 3.3 or newer. `roo` does not install on older Rubies. macOS system Ruby is 2.6 (`/usr/bin/ruby`) and cannot run this app.
+- Bundler, which ships with Ruby 3.3.
+- A network connection for the quote and Robinhood lookups.
+
+Check which Ruby your shell will use:
+
+```bash
+ruby -v
+```
+
+If that is older than 3.3, install a current Ruby. With Homebrew on an Apple Silicon Mac:
+
+```bash
+brew install ruby
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+```
+
+On an Intel Mac, Homebrew's Ruby lives at `/usr/local/opt/ruby/bin`. Put the matching `export` line in your shell profile if you want it in every new terminal. `ruby -v` should then report 3.3 or newer before you install gems.
+
+## Install
+
+```bash
 git clone https://github.com/crasinator/Ark.git
-ruby bin/ArkTrack
+cd Ark
+bundle install
+```
 
+## Run
 
-![alt text](https://github.com/crasinator/Ark/blob/main/arkExtra/Ark%20Workspace.png)
+```bash
+bundle exec ruby bin/ArkTrack
+```
+
+`bundle exec` matters. Plain `ruby bin/ArkTrack` uses whatever `ruby` is first on your `PATH`, and system Ruby does not have these gems.
+
+| Input | Action |
+| --- | --- |
+| 1 | Buys and sells in the trade file |
+| 2 | ARKK price, change, 52-week range, and market cap |
+| 3 | The same quote view for TSLA |
+| 4 | A sell picked from the trade file |
+| 5 | A buy picked from the trade file |
+| anything else | Exit. The exit screen also shows one pick from the buy list. |
+
+![Ark Tracker in the terminal](arkExtra/Ark%20Workspace.png)
